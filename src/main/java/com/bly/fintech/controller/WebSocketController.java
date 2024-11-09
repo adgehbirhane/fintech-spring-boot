@@ -20,7 +20,7 @@ public class WebSocketController {
     private MessageService messageService;
 
     @MessageMapping("/chat.send")
-    @SendTo("/topic/public")
+    @SendTo("/public")
     public Message sendMessage(@Payload Message message, SimpMessageHeaderAccessor headerAccessor) {
         return messageService.processMessage(message, headerAccessor);
     }

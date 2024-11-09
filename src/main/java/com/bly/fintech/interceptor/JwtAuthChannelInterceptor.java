@@ -20,9 +20,15 @@ public class JwtAuthChannelInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String token = accessor.getFirstNativeHeader("Authorization");
-
+        System.out.println("Valid JWT token BB: " + token);
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             token = token.substring(7);
+            if (!jwtUtils.validateJwtToken(token)) {
+                System.out.println("Invalid JWT token: " + token);
+                throw new IllegalStateException("Invalid JWT token");
+            }
+            System.out.println("Valid JWT token: " + token);
+
             if (jwtUtils.validateJwtToken(token)) {
                 String username = jwtUtils.getUsernameFromJwtToken(token);
                 String role = jwtUtils.getUserRoleFromJwtToken(token);
