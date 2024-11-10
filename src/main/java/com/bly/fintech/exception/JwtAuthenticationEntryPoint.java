@@ -17,7 +17,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             throws IOException, ServletException {
 
         // Check if the exception is related to missing or invalid token
-        String errorMessage = "Unauthorized: Something is wrong.";
+        String errorMessage = "Unauthorized: Missing or invalid token.";
 
         // You can further customize here by checking for specific exceptions
         if (authException instanceof org.springframework.security.authentication.BadCredentialsException) {
@@ -25,9 +25,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         }
 
         // Set the response status and return the error message as JSON
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
-        response.setContentType("application/json"); // return as JSON
-        response.getWriter().write("{\"statusCode\":401,\"message\": \"" + errorMessage + "\"}");
-        response.getWriter().flush(); // Make sure the response is sent
+//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
+//        response.setContentType("application/json"); // return as JSON
+//        response.getWriter().write("{\"statusCode\":401,\"message\": \"" + errorMessage + "\"}");
+//        response.getWriter().flush(); // Make sure the response is sent
     }
 }
