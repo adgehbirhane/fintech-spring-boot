@@ -25,15 +25,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    // Handle other exceptions globally
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-//        // Log the exception details for debugging
-//        logger.error("Handled generic exception: {}", ex.getMessage());
-//
-//        // Create an ErrorResponse for the generic error
-//        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),  ex.getMessage());
-//
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+        // Log the exception details for debugging
+        logger.error("Handled generic exception: {}", ex.getMessage());
+
+        // Create an ErrorResponse for the generic error
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),  ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
 }

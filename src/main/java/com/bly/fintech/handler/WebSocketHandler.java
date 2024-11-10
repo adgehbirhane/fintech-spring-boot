@@ -1,5 +1,10 @@
 package com.bly.fintech.handler;
 
+import com.bly.fintech.controller.WebSocketController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -12,6 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final WebSocketController webSocketController;
+
+    public WebSocketHandler(@Lazy WebSocketController webSocketController) {
+        this.webSocketController = webSocketController;
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
@@ -21,30 +32,55 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
-        if (payload.startsWith("@")) {
-            String targetUser = payload.split(" ")[0].substring(1);
-            String userMessage = payload.substring(targetUser.length() + 2);
-            sendToUser(targetUser, userMessage);
-        } else {
-            broadcast("Broadcast from " + session.getPrincipal().getName() + ": " + payload);
+        try {
+            JsonNode jsonPayload = objectMapper.readTree(message.getPayload());
+            webSocketController.routeMessage(jsonPayload, session.getPrincipal().getName());
+        } catch (JsonProcessingException e) {
+            sendErrorMessage(session, "Invalid JSON format");
+        } catch (IllegalArgumentException e) {
+            sendErrorMessage(session, e.getMessage());
         }
     }
 
-    private void broadcast(String message) {
+    private void sendErrorMessage(WebSocketSession session, String errorMessage) {
+        try {
+            String jsonError = objectMapper.writeValueAsString(Map.of(
+                    "statusCode",400,
+                    "type", "error",
+                    "message", errorMessage
+            ));
+            session.sendMessage(new TextMessage(jsonError));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void broadcast(String sender, String message) {
         sessions.values().forEach(s -> {
             try {
-                s.sendMessage(new TextMessage(message));
+                String jsonMessage = objectMapper.writeValueAsString(Map.of(
+                        "statusCode",200,
+                        "sender", sender,
+                        "message", message,
+                        "type", "broadcast"
+                ));
+                s.sendMessage(new TextMessage(jsonMessage));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    private void sendToUser(String userId, String message) throws Exception {
+    public void sendToUser(String userId, String sender, String message) throws Exception {
         WebSocketSession session = sessions.get(userId);
         if (session != null && session.isOpen()) {
-            session.sendMessage(new TextMessage("Message for " + userId + ": " + message));
+            String jsonMessage = objectMapper.writeValueAsString(Map.of(
+                    "statusCode",200,
+                    "sender", sender,
+                    "message", message,
+                    "type", "private"
+            ));
+            session.sendMessage(new TextMessage(jsonMessage));
         }
     }
 
