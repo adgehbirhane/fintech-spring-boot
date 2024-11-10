@@ -2,6 +2,7 @@ package com.bly.fintech.service;
 
 import com.bly.fintech.model.User;
 import com.bly.fintech.repository.UserRepository;
+import com.bly.fintech.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class AuthService {
     public User registerUser(User user) {
         if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null  || user.getRole() == null) {
             throw new IllegalArgumentException("Username, password, email, or role cannot be null.");
+        }
+        // Check if the email format is valid
+        if (!Utils.isValidEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format.");
         }
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

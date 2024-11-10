@@ -3,7 +3,6 @@
 ### Auth - Signup
 POST http://localhost:8080/api/auth/signup
 Content-Type: application/json
-
 {
   "username": "user",
   "email": "user@gmail.com",
@@ -15,7 +14,6 @@ Content-Type: application/json
 ### Auth - SignIn
 POST http://localhost:8080/api/auth/signIn
 Content-Type: application/json
-
 {
   "username": "admin",
   "password": "Admin@123"
@@ -23,11 +21,10 @@ Content-Type: application/json
 
 ###
 
-### Users - Create User
+### Users - Create User 
 POST http://localhost:8080/api/users
-Authorization: Bearer {{authToken}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzEyNTM1OTIsImV4cCI6MTczMTMzOTk5Mn0.g5Rt7wXM1GHztvVK55c74j3b2W12we6H9FsSW-_KTNWkZaPNO0_WKZv_j5XbPHZqzJRy3mg8GMuq40ITvl5qow
 Content-Type: application/json
-
 {
   "username": "belay",
   "email": "belay@gmail.com",
@@ -37,23 +34,22 @@ Content-Type: application/json
 
 ###
 
-### Users - Find All Users
+### Users - Find All Users (accessed by admins only)
 GET http://localhost:8080/api/users
-Authorization: Bearer {{authToken}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
 
 ###
 
 ### Users - Find User by ID
 GET http://localhost:8080/api/users/{{userId}}
-Authorization: Bearer {{authToken}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
 
 ###
 
 ### Users - Update User by ID
 PUT http://localhost:8080/api/users/{{userId}}
-Authorization: Bearer {{authToken}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
 Content-Type: application/json
-
 {
   "username": "belay",
   "email": "belay@gmail.com",
@@ -61,9 +57,25 @@ Content-Type: application/json
   "role": "USER"
 }
 
-###
-
-### Users - Delete User by ID
+### Users - Delete User by ID (accessed by admins only)
 DELETE http://localhost:8080/api/users/{{userId}}
-Authorization: Bearer {{authToken}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzEyNTM1OTIsImV4cCI6MTczMTMzOTk5Mn0.g5Rt7wXM1GHztvVK55c74j3b2W12we6H9FsSW-_KTNWkZaPNO0_WKZv_j5XbPHZqzJRy3mg8GMuq40ITvl5qow
 
+# WebSocket Documentation - Notifications
+
+### WebSocket - Send Message (Broadcast)
+ws://localhost:8080/ws/notifications
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzEyNTM1OTIsImV4cCI6MTczMTMzOTk5Mn0.g5Rt7wXM1GHztvVK55c74j3b2W12we6H9FsSW-_KTNWkZaPNO0_WKZv_j5XbPHZqzJRy3mg8GMuq40ITvl5qow
+{
+  "action": "broadcast",
+  "message": "Hello everyone!"
+}
+
+### WebSocket - Send Message (private)
+ws://localhost:8080/ws/notifications
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
+{
+  "action": "privateMessage",
+  "targetUser": "admin",
+  "message": "Hello, how are you?"
+}
