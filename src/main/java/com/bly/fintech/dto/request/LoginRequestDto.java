@@ -1,8 +1,8 @@
-package com.bly.fintech.payload;
+package com.bly.fintech.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public class LoginRequestDto {
 
     @NotBlank(message = "Username cannot be blank")
     private String username;
@@ -11,10 +11,10 @@ public class LoginRequest {
     private String password;
 
     // Default constructor
-    public LoginRequest() {}
+    public LoginRequestDto() {}
 
     // Parameterized constructor
-    public LoginRequest(String username, String password) {
+    public LoginRequestDto(String username, String password) {
         this.username = username;
         this.password = password;
     }

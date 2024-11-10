@@ -26,7 +26,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        String userId = session.getPrincipal().getName();  // Assumes users are authenticated
+        String userId = session.getPrincipal().getName();
         sessions.put(userId, session);
     }
 

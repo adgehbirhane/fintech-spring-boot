@@ -1,12 +1,12 @@
-package com.bly.fintech.payload;
+package com.bly.fintech.dto.response;
 
-public class JwtResponse {
+public class JwtResponseDto {
 
     private String token;
     private String type = "Bearer";
 
     // Parameterized constructor
-    public JwtResponse(String token) {
+    public JwtResponseDto(String token) {
         this.token = token;
     }
 

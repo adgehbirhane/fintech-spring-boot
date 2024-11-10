@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,13 +24,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody User user) {
         if (authService.userExists(user.getUsername(), user.getEmail())) {
-           throw new IllegalArgumentException("Username or Email is already taken!");
+            throw new IllegalArgumentException("Username or Email is already taken!");
         }
         User registeredUser = authService.registerUser(user);
-        return ResponseEntity.ok(registeredUser);
+
+        URI location = URI.create(String.format("/api/users/%s", registeredUser.getId()));
+        return ResponseEntity.created(location).body(registeredUser);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
