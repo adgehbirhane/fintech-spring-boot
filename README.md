@@ -74,8 +74,12 @@ logging.level.com.bly.fintech=INFO
 ### Running the Project
 
 1. Clone the repository.
+   ```bash
+   git clone https://github.com/adgehbirhane/fintech-spring-boot.git
+    ```
 2. Navigate to the project directory and run:
    ```bash
+   # Better to use IDE GUI interface to run the program
    mvn spring-boot:run
    
 
