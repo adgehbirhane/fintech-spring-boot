@@ -1,5 +1,6 @@
 package com.bly.fintech.exception;
 
+import com.bly.fintech.dto.response.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,41 +18,41 @@ public class GlobalExceptionHandler {
 
     // Handle IllegalArgumentException
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+    public ResponseEntity<ApiResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.warn("Handled IllegalArgumentException: {}", ex.getMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        ApiResponse errorResponse = new ApiResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     // Handle generic exceptions
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-        logger.error("Handled generic exception: {}", ex.getMessage());
+    public ResponseEntity<ApiResponse> handleGenericException(Exception ex) {
+//        logger.error("Handled generic exception: {}", ex.getMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+        ApiResponse errorResponse = new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
     // Handle 404 Not Found (NoHandlerFoundException)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException(NoHandlerFoundException ex) {
-        logger.warn("Handled 404 Not Found: {}", ex.getMessage());
+    public ResponseEntity<ApiResponse> handleNotFoundException(NoHandlerFoundException ex) {
+//        logger.warn("Handled 404 Not Found: {}", ex.getMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Resource not found");
+        ApiResponse errorResponse = new ApiResponse(HttpStatus.NOT_FOUND.value(), "Resource not found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) {
-        logger.warn("Handled ResponseStatusException: {}", ex.getReason());
+    public ResponseEntity<ApiResponse> handleResponseStatusException(ResponseStatusException ex) {
+//        logger.warn("Handled ResponseStatusException: {}", ex.getReason());
 
-        ErrorResponse errorResponse = new ErrorResponse(ex.getStatusCode().value(), ex.getReason());
+        ApiResponse errorResponse = new ApiResponse(ex.getStatusCode().value(), ex.getReason());
         return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+    public ResponseEntity<ApiResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         String message;
 
         if (ex.getRootCause() != null && ex.getRootCause().getMessage().contains("users_username_key")) {
@@ -62,7 +63,7 @@ public class GlobalExceptionHandler {
             message = "Database error: " + ex.getRootCause().getMessage();
         }
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), message);
+        ApiResponse errorResponse = new ApiResponse(HttpStatus.CONFLICT.value(), message);
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,11 +20,15 @@ public class User {
     private UUID id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "Username is mandatory")
     private String username;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "Password is mandatory")
     private String password; // this is not in the assessment requirement
 
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is mandatory")
     @Column(nullable = false, unique = true)
     private String email;
 

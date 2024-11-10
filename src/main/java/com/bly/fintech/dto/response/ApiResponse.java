@@ -1,10 +1,10 @@
-package com.bly.fintech.exception;
+package com.bly.fintech.dto.response;
 
-public class ErrorResponse {
+public class ApiResponse {
     private int statusCode;
     private String message;
 
-    public ErrorResponse(int statusCode, String message) {
+    public ApiResponse(int statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
     }

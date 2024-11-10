@@ -1,11 +1,13 @@
 package com.bly.fintech.controller;
 
+import com.bly.fintech.dto.response.ApiResponse;
 import com.bly.fintech.model.User;
 import com.bly.fintech.service.AuthService;
 import com.bly.fintech.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -67,8 +69,15 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable UUID id) {
         boolean isDeleted = userService.deleteUserById(id);
-        return isDeleted ? ResponseEntity.ok("User deleted successfully.") : ResponseEntity.notFound().build();
+        if (isDeleted) {
+            ApiResponse response = new ApiResponse(200, "User deleted successfully.");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse(404, "User not found."));
+        }
     }
+
 }

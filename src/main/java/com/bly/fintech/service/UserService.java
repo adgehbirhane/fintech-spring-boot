@@ -45,14 +45,14 @@ public class UserService {
         return userRepository.findById(id).map(user -> {
             if (updatedUser.getUsername() != null) user.setUsername(updatedUser.getUsername());
             if (updatedUser.getEmail() != null) {
-                if (!Utils.isValidEmail(user.getEmail())) {
+                if (!Utils.isValidEmail(updatedUser.getEmail())) {
                     throw new IllegalArgumentException("Invalid email format.");
                 }
                 user.setEmail(updatedUser.getEmail());
             }
             if (updatedUser.getPassword() != null) user.setPassword(updatedUser.getPassword());
             return userRepository.save(user);
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with ID: " + id));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist!"));
     }
 
     public boolean deleteUserById(UUID id) {
@@ -60,6 +60,6 @@ public class UserService {
             userRepository.deleteById(id);
             return true;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist!");
+        return false;
     }
 }

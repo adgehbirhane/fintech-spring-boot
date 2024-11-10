@@ -24,10 +24,9 @@ public class AuthService {
     }
 
     public User registerUser(User user) {
-        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null  || user.getRole() == null) {
-            throw new IllegalArgumentException("Username, password, email, or role cannot be null.");
+        if (user.getRole() == null) {
+            throw new IllegalArgumentException("Role is mandatory"); // Role isn't provided while signup. so, I'm validated here.
         }
-        // Check if the email format is valid
         if (!Utils.isValidEmail(user.getEmail())) {
             throw new IllegalArgumentException("Invalid email format.");
         }
