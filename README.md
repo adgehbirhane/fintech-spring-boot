@@ -59,7 +59,7 @@ logging.level.org.springframework.security=ERROR
 
 spring.mvc.throwExceptionIfNoHandlerFound=true
 
-# Log to a file
+# Log to a file (a few logs)
 logging.file.name=logger.txt
 
 # Set log level for all classes
