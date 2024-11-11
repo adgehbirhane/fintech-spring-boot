@@ -59,17 +59,6 @@ logging.level.org.springframework.security=ERROR
 
 spring.mvc.throwExceptionIfNoHandlerFound=true
 
-# Log to a file (a few logs)
-logging.file.name=logger.txt
-
-# Set log level for all classes
-logging.level.org.springframework.web.filter=DEBUG
-
-# Set log format for the console (optional)
-logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
-
-# Set the level for specific packages (optional)
-logging.level.com.bly.fintech=INFO
 ```
 ### Running the Project
 
