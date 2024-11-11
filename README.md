@@ -70,5 +70,101 @@ spring.mvc.throwExceptionIfNoHandlerFound=true
    ```bash
    # Better to use IDE GUI interface to run the program
    mvn spring-boot:run
-   
 
+# API Docs
+
+### Auth - Signup
+```HTTPie
+POST http://localhost:8080/api/auth/signup
+```
+
+```json
+{
+"username": "user",
+"email": "user@gmail.com",
+"password": "User@123"
+}
+```
+
+### Auth - SignIn
+```HTTPie
+POST http://localhost:8080/api/auth/signIn
+```
+```json
+{
+"username": "admin",
+"password": "Admin@123"
+}
+```
+
+### Users - Create User
+```HTTPie
+POST http://localhost:8080/api/users
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzEyNTM1OTIsImV4cCI6MTczMTMzOTk5Mn0.g5Rt7wXM1GHztvVK55c74j3b2W12we6H9FsSW-_KTNWkZaPNO0_WKZv_j5XbPHZqzJRy3mg8GMuq40ITvl5qow
+```
+
+```json
+{
+"username": "belay",
+"email": "belay@gmail.com",
+"password": "Belay@123",
+"role": "USER"
+}
+```
+
+### Users - Find All Users (accessed by admins only)
+```HTTPie
+GET http://localhost:8080/api/users
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
+```
+### Users - Find User by ID
+```HTTPie
+GET http://localhost:8080/api/users/{{userId}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
+```
+
+### Users - Update User by ID
+```HTTPie
+PUT http://localhost:8080/api/users/{{userId}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
+```
+
+```json
+{
+"username": "belay",
+"email": "belay@gmail.com",
+"password": "Belay@123",
+"role": "USER"
+}
+```
+### Users - Delete User by ID (accessed by admins only)
+```HTTPie
+DELETE http://localhost:8080/api/users/{{userId}}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzEyNTM1OTIsImV4cCI6MTczMTMzOTk5Mn0.g5Rt7wXM1GHztvVK55c74j3b2W12we6H9FsSW-_KTNWkZaPNO0_WKZv_j5XbPHZqzJRy3mg8GMuq40ITvl5qow
+```
+
+# WebSocket Docs
+### WebSocket - Send Message (Broadcast)
+```HTTPie
+ws://localhost:8080/ws/notifications
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzEyNTM1OTIsImV4cCI6MTczMTMzOTk5Mn0.g5Rt7wXM1GHztvVK55c74j3b2W12we6H9FsSW-_KTNWkZaPNO0_WKZv_j5XbPHZqzJRy3mg8GMuq40ITvl5qow
+```
+```json 
+{
+"action": "broadcast",
+"message": "Hello everyone!"
+}
+```
+
+### WebSocket - Send Message (private)
+```HTTPie
+ws://localhost:8080/ws/notifications
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
+```
+```json 
+{
+   "action": "privateMessage",
+   "targetUser": "admin",
+   "message": "Hello, how are you?"
+}
+```
