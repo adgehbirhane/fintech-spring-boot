@@ -117,6 +117,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIiL
 GET http://localhost:8080/api/users?page=0&size=2
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMTI1MzczNiwiZXhwIjoxNzMxMzQwMTM2fQ.610WCFCdMcHjqvH81cf0bQqp4XHU5zc6BkHpYBNIdFV0jDJzNPtmKaOl57Ri7WBqXurEVwQN84alFC5kMmVs9A
 ```
+
 ### Users - Find User by ID
 ```HTTPie
 GET http://localhost:8080/api/users/{{userId}}
