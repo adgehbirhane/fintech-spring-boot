@@ -14,7 +14,7 @@ This project is a secure RESTful API with WebSocket functionality designed to al
 
 ## Technologies Used
 
-- **Java** (Latest Stable Version)
+- **Java** (java 21.0.5 2024-10-15 LTS)
 - **Spring Boot** for REST API and WebSocket
 - **JWT** for secure authentication
 - **MySQL** as the relational database
